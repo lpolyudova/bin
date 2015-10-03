@@ -35,10 +35,12 @@ case "$1" in
 	pg_dump -U "$user" -d "$db_name" | gzip > ${new_db_name}.sql.gz
 	scp ${new_db_name}.sql.gz $remote_host:$remote_location
  	rm ${new_db_name}.sql.gz
-	ssh $remote_host  psql_exec import_database  ${new_db_name}
+	ssh $remote_host  /Users/lpolyudova/bin/psql_exec import_database  ${new_db_name} $remote_location
 	;;
     
     "import_database")
+	remote_location=$3
+	db_name=$2
 	cd $remote_location
 	createdb -U $user $db_name -O $owner
 	gunzip < ${new_db_name}.sql.gz | psql -U $user $db_name
@@ -54,3 +56,4 @@ case "$1" in
 	echo "Fuction not found"
 	;;
 esac
+## hello
