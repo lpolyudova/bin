@@ -1,0 +1,49 @@
+#!/bin/bash
+
+### Script reads through all scripts in the current files
+### and verifies dependencies are installed
+### Usage: verify-dependencies -f {name}
+### Default: verify all
+
+set -e
+
+function check_file_for_dependencies
+{
+    echo "Check $file"
+    package=`cat $file | sed -ne '/^##!/p' | sed -e 's/##!//g' | cut -d: -f2`
+    if [ -z "$package" ]
+    then
+	continue
+    fi
+    
+    brew list | grep "$package"
+    if [ -n "$?" ]
+    then
+       echo "Installing $package"
+       brew install $package
+    fi
+
+}
+
+
+key=$1
+echo "Checking for un-installed dependencies"
+while [[ $# > 0 ]]
+do
+    case $key in
+	-f|--file)
+	    check_file_for_dependencies $2
+	    shift
+	    ;;
+	
+	*)
+	    files="`ls ~/bin/ | grep -v '#' | grep -v '~'`"
+	    for file in $files
+	    do
+		check_file_for_dependencies $file	       
+	    done
+	    ;;
+    esac
+done
+
+
