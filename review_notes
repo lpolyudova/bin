@@ -1,0 +1,13 @@
+* Notes from review:
+** TODO:
+*** Remove type from persistence Session, ServiceRepository
+*** Migration 8125to8126 
+collect set first, then do a single update
+*** Change object Delete
+DeleteVCSFile should only allow for one folderitem to be connected to a VCSFile
+*** Orginal gets replaced with current
+** Test Cases:
+*** 
+** Changes:
+*** 4524: Comments
+*** 1232 change
