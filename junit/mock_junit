@@ -1,0 +1,39 @@
+* Test cases
+** Case 1
+	create Folder=1
+	create Folder=2 Parent=Folder1 
+	create Folder=3
+	create VCSRepository=1
+	checkout Folder1 VCSRepository1
+	vcsAdd Folder2
+	move Composition1 Folder2
+	vcsCommit Folder1
+	move Folder2 Folder3
+	check deleted Folder2,Composition1
+	done
+	
+* Comments:
+At first go for more verbose language 
+use syntax like cmd attr=value... 
+afterwards, imporve parsing, which would simplify the syntax
+* Format Guide
+
+** Create:
+*** <create> <type> <identifier>
+** standard commands:
+*** <move> <target> <new_location>
+*** <copy> <taget> <new_location> <new_name>
+*** <delete> <target>
+
+*** <rename> <target> <new_name>
+
+** vcsCommands:
+*** <checkout> <folder> <vcsrepo>
+    Comments: make sure to add objects:
+    Composition1, MessageClip1, Target1 to the list of test_objects
+*** <vcsadd> <folder/object>
+*** <vcscommit> <folder/object>
+*** <vcsrevert> <folder/object>
+*** <vcspush> <none>
+
+
