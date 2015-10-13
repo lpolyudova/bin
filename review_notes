@@ -1,13 +1,67 @@
 * Notes from review:
 ** TODO:
 *** Remove type from persistence Session, ServiceRepository
+    done
 *** Migration 8125to8126 
-collect set first, then do a single update
+    collect set first, then do a single update
+    problems: ResultSet is not modifiable, 
 *** Change object Delete
 DeleteVCSFile should only allow for one folderitem to be connected to a VCSFile
-*** Orginal gets replaced with current
-** Test Cases:
-*** 
+
+** Test Cases Added:
+*** AbstractRepositoryTypeUnitTest.java
+*** CompositionPersistenceUnitTest.java
+*** FolderPersistenceUnitTest.java
++  public void testSelfContainedReferencesKeptOnCopy() throws Exception
++  public void testSelfContainedReferencesKeptOnCopyNested() throws Exception
+*** VCSPersistenceUnitTest.java
++  public void testAddDeleteCommit() throws Exception
++  public void testVCSAddListInNonInVersionedFolder() throws Exception
++  public void testAddNotVersionableTypeToVCSFolder() throws Exception
++  public void testCannotHaveConflictingRepositories() throws Exception
++  public void testAddItemNotBelongingToRepository() throws Exception
++  public void testVCSCommitGrandChildren() throws Exception
++  public void testVCSEraseVersionInformationOnCopy() throws Exception
++  public void testMovedVersionedItemToNonVersionedFolder() throws Exception
++  public void testMoveVersionedItemToNonVersionedFolderRevert() throws Exception
++  public void testMoveFolderUnderVersioningToNotVersionedLocation() throws Exception
++  public void testMoveCheckoutFolder() throws Exception
++  public void testMoveVersionedFolderToDifferentRepository() throws Exception
++  public void testMoveVersionedFolderToDifferentRepositoryRevert() throws Exception
++  public void testMoveAddedFolderWithinTheSameRepository() throws Exception
++  public void testMoveCommittedFolderWithinTheSameRepository() throws Exception
++  public void testMoveFolderWithinTheSameRepositoryTwice() throws Exception
++  public void testMoveReferenceTargets() throws Exception
++  public void testMoveCommitPush() throws Exception
++  public void testCheckPathOnRename() throws Exception
++  public void testCheckPathOnRenameWithChildren() throws Exception
++  public void testModifiedCommittedFolderWithinTheSameRepository() throws Exception
++  public void testMoveFolderWithinTheSameRepositoryRevert() throws Exception
++  private void testVCSInfo(Object oTestObject, boolean VCSPresent, String strModificationType, String strRepoPath) throws Exception
++  public void testDeleteDependency() throws Exception
++  public void testCopyVersionedDirectoryAndDeleteOriginal() throws Exception
++  public void testAncestorVersionedFlagOnCreate() throws Exception
++  public void testAncestorVersionedFlagOnMove() throws Exception
++  public void testDeleteFolderContainingRootCheckoutFolder() throws Exception
++  public void testDeleteMovedFile() throws Exception
++  public void testDeletedFileXMLIsCleanedUp() throws Exception
++  private String getLocalRepoPath(long lVCSRepositoryID) throws Exception
++  private long insertClipElement(long lMessageClipID, Object oClipElement, String strSiblingUid) throws Exception
++  public void testCleanVCSDirectoryInTheFileSystem() throws Exception
++  public void testCheckPathAfterMove() throws Exception
++  public void testMoveToLocationWithDeletedFileOfTheSameName() throws Exception
++  public void testRenameDeleteRename() throws Exception
++  private void testMovedObject(String strType, long lTestObjectID, long lOldParentID, long lNewParentID) throws Exception
++  private void testCheckoutObjects(String strDestFolderFullPath) throws Exception
++  public void testmakeRepository() throws Exception 
+*** Commented out (in VCSPersistenceUnitTest):
++   * public void testVCSAddForObjectWithUnversionedObject() throws Exception {
++   * public void testDeepNestedCompositionVerisioning() throws Exception {
++   * public void testVCSPullWithMergeConflict() throws Exception { Object
+
+
 ** Changes:
 *** 4524: Comments
 *** 1232 change
+
+
