@@ -16,10 +16,18 @@
 At first go for more verbose language 
 use syntax like cmd attr=value... 
 afterwards, imporve parsing, which would simplify the syntax
+
+** Possible format for children:
+   create Folder=id 
+   ( child=1 child=2
+   ( grandchild=1 ) )
+*** Explanation:
+    Use paranthesis to label parent-child relationships
+
 * Format Guide
 
 ** Create:
-*** <create> <type> <identifier>
+*** <create> <type>=<identifier> 
 ** standard commands:
 *** <move> <target> <new_location>
 *** <copy> <taget> <new_location> <new_name>
