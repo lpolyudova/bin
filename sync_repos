@@ -1,0 +1,43 @@
+#!/bin/bash
+
+## Synchronize codebase on localhost and remote_host
+## Description: sync -h {remote_hostname} -d {.svn_source_dir} -k {private_key_name}
+## Private key name is assumed to be the same as the hostname (without the username)
+
+## TODO: add option parsing
+set -xe
+
+# Set standard parameters in case arguments are not provided
+home_dir=/Users/lpolyudova
+remote_host=lpolyudova@liza-mac.local
+private_key_name=liza-mac
+
+svn_source_dir=$TRUNK
+
+# parse options
+while [[ $# > 1]]
+do
+    key=$1
+
+    case $key in
+	-h|--host)
+	    remote_host=$2
+	    host=`sed 's/.*@//; s/\..*//'` 
+	    shift
+	    ;;
+	-d|-source_dir)
+	    svn_source_dir=$2
+	    shift
+	    ;;
+	-k|--key)
+	    private_key_name=$2
+	    shift
+	*)
+	    ;;
+esac
+
+cd $svn_source_dir
+svn diff > /tmp/temp_patch.diff
+scp -i ~/.ssh/liza-mac /tmp/temp_patch.diff $remote_host:/tmp/temp_patch.diff
+ssh -i ~/.ssh/liza-mac $remote_host "cd $svn_source_dir; patch -p0 -i /tmp/temp_patch.diff; rm /tmp/temp_patch.diff"
+rm /tmp/temp_patch.diff

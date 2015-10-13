@@ -1,0 +1,9 @@
+create Folder=1
+create Folder=2
+create VCSRepository=1
+vcscheckout Folder1 VCSRepository1
+get MessageClip1=oMessageClipRetrieved path=Folder1
+move MessageClip1 Folder2
+vcsrevert Folder1
+#check references
+done
