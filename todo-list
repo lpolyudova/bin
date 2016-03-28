@@ -1,0 +1,102 @@
+#!/usr/bin/python
+
+# Make a list of todo items diffing with the appropriate branch
+# passed in as --branch='branch'
+
+# Further improvements:
+#    include function name before the todo-stab for clarity
+
+import sys, re
+from git import *
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+                                    
+
+option_values = {}
+
+class Options(object):
+    def __init__(self):
+        self.src="$SOURCE"
+        self.branch="master"
+    def set(self, opt, value):
+        if "--" in opt:
+            opt=opt[2:]
+        if not opt in dir(self):
+            print "no such attribute"
+        else:
+            setattr(self, opt, value)
+    def get(self, opt):
+        if not opt in dir(self):
+            print "no such attribute"
+        else:
+            return getattr(self,opt)
+            
+            
+    
+
+
+def find_todo(diff, out):
+    for line in diff.readlines():
+        # this is a header, grab file name
+        if line.contains("+++"):
+            class_name = line
+            continue
+
+        # this is a TODO item: print class name together with text of the item
+        elif line.contains("TODO"):
+            out.write("%s: %s") % (class_name, line)
+            
+            
+        
+
+
+
+def main():
+    options = Options()
+    # parse command-line arguments
+    for arg in sys.argv:
+        if not "=" in arg:
+            continue
+        [key, value]=arg.split('=')
+        options.set(key, value)
+
+    print "Getting todo list, diff with branch: %s " %  options.get("branch")
+    out = open("todolist", "w")
+
+    repo=Repo(options.get("src"))
+    current = repo.head.commit
+    compare_branch = getattr(repo.heads, options.get("branch")).commit
+    diff_array = compare_branch.diff(current, create_patch = True)
+    diff_array_todo = [diff for diff in diff_array if "TODO" in diff.diff]
+    for file in diff_array_todo:
+        if file.a_blob == None:
+            filename=file.b_blob.path
+        else:
+            filename=file.a_blob.path
+        lines=file.diff.split('\n')
+        todo_lines=[line for line in lines if "TODO" in line and "+" in line]
+        if len(todo_lines)==0:
+            print "%s %s %s" % (bcolors.WARNING,  filename, bcolors.ENDC)
+            print "No todo items"
+        else:
+            print "%s %s %s" % (bcolors.WARNING, filename, bcolors.ENDC)
+            for line in todo_lines:
+                todo=re.sub('.*TODO',' #',line)
+                print "%s %s %s" % (bcolors.OKBLUE, todo, bcolors.ENDC)
+        
+            
+        
+        
+        
+            
+if __name__ == "__main__": main()
+
+    
