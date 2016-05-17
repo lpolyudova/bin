@@ -2,10 +2,16 @@
 
 
 # Load custom aliases
-if [[ -f ~/.alias ]]
+if [[ -f ~/.public_alias ]]
 then
-   . ~/.alias
+   . ~/.public_alias
 fi
+
+if [[ -f ~/.private_alias ]]
+then
+   . ~/.private_alias
+fi
+
 #
 ## Load PATH
 if [[ -f ~/.path ]]
@@ -75,6 +81,7 @@ print_ascii()
     # Get random id f the picture 
     idx=$(( RANDOM % $(ls $BIN/ascii_art | wc -l ) +1 ))
     echo $idx
+    list=($(ls))
     echo $list[idx]
     cat $BIN/ascii_art/$(echo $list[idx])
 }

@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+
+# General
+alias ascii='man ascii | grep -m 2 -A 58 octal'
+alias fix-commit="git commit -a --amend --reuse-message HEAD"
+alias fix-commit-partial="git commit --amend --reuse-message HEAD"
+alias lru-branches="git for-each-ref --sort=-committerdate refs/heads/ | sed  's/^.*heads\///g'"
+alias la='ls -a'
+
