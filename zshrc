@@ -70,3 +70,11 @@ extract ()
 	echo "no file to extract"
     fi
 }
+print_ascii()
+{
+    # Get random id f the picture 
+    idx=$(( RANDOM % $(ls $BIN/ascii_art | wc -l ) +1 ))
+    echo $idx
+    echo $list[idx]
+    cat $BIN/ascii_art/$(echo $list[idx])
+}

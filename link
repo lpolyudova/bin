@@ -1,0 +1,32 @@
+#!/bin/zsh
+
+# Run this script after downloading dot files, it will make all necessary symlinks
+
+
+check_defined()
+{
+    if ! test -n "$1"; then
+	echo "definition check failed"
+	exit 1
+	fi
+}
+
+
+set -e
+
+DIR=`pwd`
+check_defined $DIR
+check_defined $HOME
+
+# Check if file already exists and not a symlink
+if $(file -h $HOME/.zshrc | grep symbolic > /dev/null) && test $?; then
+    # zshrc file already exists, back it up
+    echo "zsh config file already exists, rename to .zshrc_bk"
+    mv $HOME/.zshrc{,_bk}
+fi
+
+
+ln -sf $DIR/zshrc  $HOME/.zshrc
+
+
+
