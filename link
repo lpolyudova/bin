@@ -3,6 +3,7 @@
 # Run this script after downloading dot files, it will make all necessary symlinks
 
 
+
 check_defined()
 {
     if ! test -n "$1"; then
@@ -25,8 +26,11 @@ if $(file -h $HOME/.zshrc | grep symbolic > /dev/null) && test $?; then
     mv $HOME/.zshrc{,_bk}
 fi
 
+#Create hard links for all files required
+ln $DIR/zshrc  $HOME/.zshrc
+ln $DIR/bashrc $HOME/.bashrc
 
-ln -sf $DIR/zshrc  $HOME/.zshrc
+
 
 
 

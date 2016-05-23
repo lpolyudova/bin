@@ -47,6 +47,8 @@ precmd () { vcs_info }
 PS1=' %F{12}%3~ ${vcs_info_msg_0_}%f 
  > '
 
+# Set history file variable
+export HISTFILE=~/.zsh_history
 
 # Set history search
 bindkey "^[[A" history-beginning-search-backward
